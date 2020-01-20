@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CodecoreQuiz2IdeaFactory</title>
+    <title>Idea Factory</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,6 +10,14 @@
   </head>
 
   <body>
-    <%= yield %>
+
+    <nav> 
+      <%= link_to('New Idea', new_idea_path) %> | 
+    </nav>
+
+    <main class="container">
+      <%= yield %>
+    </main>
+
   </body>
 </html>
