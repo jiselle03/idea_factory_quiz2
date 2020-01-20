@@ -117,18 +117,63 @@ RSpec.describe IdeasController, type: :controller do
     end
     
     describe '#destroy' do
-        before do
-            @idea = FactoryBot.create(:idea)
-            delete(:destroy, params: { id: @idea.id })
+        context 'with user signed in' do
+            before do
+                session[:user_id] = current_user.id
+            end
+
+            context 'as owner' do
+                before do
+                    @idea = FactoryBot.create(:idea, user: current_user)
+                    delete(:destroy, params: { id: @idea.id })
+                end
+
+                it 'should remove an idea from the db' do
+                    expect(Idea.find_by id: @idea.id).to be(nil)
+                end
+
+                it 'redirects to the ideas index' do
+                    expect(response).to redirect_to root_path
+                end
+            end
+
+            context 'as non-owner' do
+                before do
+                    @idea = FactoryBot.create(:idea)
+                    delete(:destroy, params: { id: @idea.id })
+                end
+    
+                it 'redirects to idea show' do
+                    expect(response).to redirect_to idea_path(@idea)
+                end
+    
+                it 'sets a flash danger' do
+                    expect(flash[:danger]).to be
+                end
+    
+                it 'does not remove an idea' do
+                    expect(Idea.find_by(id: @idea.id)).to eq(@idea)
+                end
+                
+            end
         end
 
-        it 'should remove an idea from the db' do
-            expect(Idea.find_by id: @idea.id).to be(nil)
+        context 'with no user signed in' do
+            before do
+                idea = FactoryBot.create(:idea)
+                current_user = nil
+                delete(:destroy, params: { id: idea.id })
+            end
+
+            it 'should redirect to session#new' do
+                expect(response).to redirect_to(new_session_path)
+            end
+
+            it 'should send a flash danger message' do 
+                expect(flash[:danger]).to be
+            end
         end
 
-        it 'redirects to the ideas index' do
-            expect(response).to redirect_to root_path
-        end
     end
 
     describe '#index' do
@@ -145,51 +190,113 @@ RSpec.describe IdeasController, type: :controller do
     end
 
     describe '#edit' do
-        before do
-            @idea = FactoryBot.create(:idea)
-            get(:edit, params: { id: @idea.id })
+        context 'with user signed in' do
+            before do
+                session[:user_id] = current_user.id
+            end
+
+            context 'as owner' do
+                before do
+                    @idea = FactoryBot.create(:idea, user: current_user)
+                    get(:edit, params: { id: @idea.id })
+                end
+
+                it 'should render the edit template' do
+                    expect(response).to(render_template :edit) 
+                end
+                it 'should set an instance variable idea for the object to edit' do
+                    expect(assigns :idea).to eq(@idea)
+                end
+            end
+
+            context 'as non-owner' do
+                before do
+                    @idea = FactoryBot.create(:idea)
+                    get(:edit, params: { id: @idea.id })
+                end
+
+                it 'redirects to idea show' do
+                    expect(response).to redirect_to(idea_path(@idea))
+                end
+                it 'sets a flash danger' do
+                    expect(flash[:danger]).to be
+                end
+                it 'does not remove an idea' do
+                    expect(Idea.find_by(id: @idea.id)).to eq(@idea)
+                end
+            end
+
         end
 
-        it 'should render the edit template' do
-            expect(response).to(render_template :edit) 
+        context 'with no user signed in' do
+            before do
+                @idea = FactoryBot.create(:idea)
+                current_user = nil
+                get(:edit, params: { id: @idea.id })
+            end
+            
+            it 'should redirect to session#new' do
+                expect(response).to redirect_to(new_session_path)
+            end
+
+            it 'should send a flash danger message' do
+                expect(flash[:danger]).to be
+            end
         end
 
-        it 'should set an instance variable idea for the object to edit' do
-            expect(assigns :idea).to eq(@idea)
-        end
+
     end
 
     describe '#update' do
         before do
-            @idea = FactoryBot.create(:idea)
+            session[:user_id] = current_user.id
+            @idea = FactoryBot.create(:idea, user: current_user)
         end
 
-        context 'with valid parameters' do
+        context 'with user signed in' do
+            context 'with valid parameters' do
+                before do
+                    @new_title = "New Title"
+                    patch :update, params: { id: @idea.id, idea: { title: @new_title }}
+                end
+
+                it 'should update the idea in the db' do
+                    expect(@idea.reload.title).to eq(@new_title)
+                end
+                it 'should redirect to the show page of that idea' do
+                    expect(response).to redirect_to(idea_path @idea)
+                end
+            end
+
+            context 'with invalid parameters' do
+                def invalid_request
+                    patch :update, params: { id: @idea.id, idea: { title: nil }}
+                end
+
+                it "should not update idea" do
+                    expect { invalid_request }.not_to change { @idea.reload.title }
+                end
+
+                it "should render the edit template" do
+                    invalid_request
+                    expect(response).to render_template(:edit)
+                end
+            end
+        end
+
+        context 'with no user signed in' do
             before do
-                @new_title = "New Title"
-                patch :update, params: { id: @idea.id, idea: { title: @new_title }}
+                @idea = FactoryBot.create(:idea)
+                current_user = nil
+                patch :update, params: { id: @idea.id, idea: { title: "New Title" }}
+            end
+            
+            it 'should redirect to session#new' do
+                expect(response).to redirect_to(new_session_path)
             end
 
-            it 'should update the idea in the db' do
-                expect(@idea.reload.title).to eq(@new_title)
-            end
-            it 'should redirect to the show page of that idea' do
-                expect(response).to redirect_to(idea_path @idea)
-            end
-        end
-
-        context 'with invalid parameters' do
-            def invalid_request
-                patch :update, params: { id: @idea.id, idea: { title: nil }}
-            end
-
-            it "should not update idea" do
-                expect { invalid_request }.not_to change { @idea.reload.title }
-            end
-
-            it "should render the edit template" do
-                invalid_request
-                expect(response).to render_template(:edit)
+            it 'should send a flash danger message' do
+                expect(flash[:danger]).to be
             end
         end
     end
