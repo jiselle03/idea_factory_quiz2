@@ -1,0 +1,7 @@
+<h3>Idea</h3>
+<h5><%= @idea.title %></h5>
+<p><%= @idea.description %></p>
+<p>Added <%= time_ago_in_words(@idea.created_at) %> ago</p>
+<p>Last Edited <%= time_ago_in_words(@idea.updated_at) %> ago</p>
+<%= link_to("Edit", edit_idea_path(@idea.id)) %> | 
+<%= link_to("Delete", idea_path(@idea), method: :delete, data: {confirm: 'Are you sure?'}) %>
