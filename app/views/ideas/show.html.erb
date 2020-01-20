@@ -11,7 +11,7 @@
 
 <% if @like.present? && can?(:destroy, @like) %>
     <%= link_to(
-        "Unlike",
+        "Liked",
         like_path(@like),
         method: :delete
     ) %>
