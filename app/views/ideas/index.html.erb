@@ -2,6 +2,6 @@
 <div>
     <h2><%= link_to(idea.title, idea_path(idea.id)) %></h2>
     <p><%= idea.description %></p>
-    <p>Posted <%= time_ago_in_words(question.created_at) %> ago</p>
+    <p>Posted by <%= idea.user.full_name %> <%= time_ago_in_words(idea.created_at) %> ago</p>
 </div>
 <% end %>
