@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     resources :reviews
   end
 
-  get('/', { to: 'ideas#index', as: 'ideas_path' })
+  get('/', { to: 'ideas#index', as: 'root' })
 
   resources :users, only: [:new, :create]
   resource :session, only: [:new, :create, :destroy]
