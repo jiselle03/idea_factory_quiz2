@@ -5,3 +5,4 @@
 Users.delete_all
 Ideas.delete_all
 Reviews.delete_all
+
