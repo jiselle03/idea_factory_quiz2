@@ -12,10 +12,26 @@
   <body>
 
     <nav> 
-      <%= link_to('New Idea', new_idea_path) %> | 
+      <%= link_to 'New Idea', new_idea_path %> | 
+      <% if user_signed_in? %>
+        Hello, <%= current_user.full_name %>
+        <%= link_to "Log Out", session_path, method: :delete, data: { confirm: "Are you sure you want to log out?" } %>
+      <% else %>
+        <%= link_to "Log In", new_session_path %> | 
+        <%= link_to "Sign Up", new_user_path %>
+      <% end %>
     </nav>
 
     <main class="container">
+
+    <p>
+    <% flash.each do |type, message| %>
+      <div class="flash flash-<%= type %>">
+        <%= message %>
+      </div>
+    <% end %>
+    </p>
+
       <%= yield %>
     </main>
 
