@@ -4,7 +4,7 @@ class LikesController < ApplicationController
     def create
         idea = Idea.find params[:idea_id]
         like = Like.new(user: current_user, idea: idea)
-        if can? :like, @idea
+        if can? :like, idea
             if like.save
                 flash[:success] = "Idea liked"
             else
@@ -13,7 +13,7 @@ class LikesController < ApplicationController
             redirect_to idea
         else
             flash[:danger] = "You can't like your own idea!" 
-            redirect_to idea_path(@idea)
+            redirect_to idea_path(idea)
         end
     end
 
