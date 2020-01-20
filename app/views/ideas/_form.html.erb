@@ -2,6 +2,13 @@
 
 <div class="form-container">
     <div class="box">
+
+        <% if current_page? new_idea_path %>
+        <h3>Add a New Idea!</h3>
+        <% elsif current_page? edit_idea_path %>
+        <h3>Edit Your Idea!</h3>
+        <% end %>
+
         <div class="form-group">
             <% if @idea.errors.present?%>
             <%= @idea.errors.full_messages.join(', ')%>
@@ -9,11 +16,11 @@
         </div>
         <div class="form-group">
             <%= f.label :title, class: "label" %><br>
-            <%= f.text_field :title, class: "form-control" %>
+            <%= f.text_field :title, class: "form-control", placeholder: "What's the big idea?" %>
         </div>
         <div class="form-group">
             <%= f.label :description, class: "label" %><br>
-            <%= f.text_area :description, cols: 50, rows:5, class: "form-control"%>
+            <%= f.text_area :description, cols: 50, rows:5, class: "form-control", placeholder: "Tell us more!"%>
         </div>
         <%= f.submit "Submit", class: "btn btn-outline-primary" %>
     <% end %>

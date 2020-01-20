@@ -1,23 +1,44 @@
-.container-fluid {
-    margin: 2em 3em;
+* {
+    box-sizing: border-box;
+}
+ 
+html {
+    width: 100%;
+    min-height: 100%;
+}
+ 
+body {
+    width: inherit;
+    min-height: inherit;
+    margin: 0;
+    padding: 0;
 }
 
-.nav-container{
+.container-fluid {
+    padding: 2em;
+}
+
+.nav-container {
     display:flex;
     flex-direction: row;
-    padding: 0 2em;
+    padding: 1em 2em;
 }
 
-.menu-container{
+.menu-container {
     flex: 1;
+}
+
+.float-right {
+    margin-right: 2em;
 }
 
 .form-container {
     margin: auto;
+    padding: 2em 0;
 }
 
 .box {
-    margin: 2em 4em;
+    margin: 0 4em;
     padding: 2em;
     border: 1px solid lightgrey;
     box-shadow: 5px 5px #888888;
@@ -34,4 +55,12 @@
 
 h3 {
     margin: 0 2.5em;
+}
+
+.card {
+    margin-right: 4em;
+}
+
+.center {
+    text-align: center;
 }
