@@ -18,5 +18,13 @@ class Ability
       review.user == user || review.idea.user == user
     end
 
+    can :like, Idea do |idea|
+      user.persisted? && idea.user != user
+    end
+
+    can :destroy, Like do |like|
+      like.user = user
+    end
+
   end
 end
