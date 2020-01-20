@@ -1,5 +1,5 @@
 class IdeasController < ApplicationController
-
+    before_action :authenticate_user!, except: [:index, :show]
     before_action :find_idea, only: [:edit,:update,:show, :destroy]
 
     def new
@@ -8,6 +8,7 @@ class IdeasController < ApplicationController
 
     def create
         @idea = Idea.new idea_params
+        @idea.user = current_user
         if @idea.save
             flash[:notice] = 'Idea created successfully'
             redirect_to idea_path(@idea.id)
@@ -38,7 +39,7 @@ class IdeasController < ApplicationController
 
     def destroy
         @idea.destroy
-        redirect_to ideas_path
+        redirect_to root_path
     end
 
     private
