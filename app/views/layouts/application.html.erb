@@ -13,7 +13,7 @@
 
     <nav class="nav-container"> 
       <div class="logo-container">
-        <%= image_tag "logo.png", height:75 %><br>
+        <%= link_to image_tag("logo.png", height:75), root_path %><br>
         <small><em>HOME OF THE NEXT BIG THING</em></small>
       </div>
       <div class="menu-container">
@@ -26,12 +26,11 @@
             <li class="nav-item"><%= link_to "Sign Up", new_user_path, class: "nav-link" %></li>
           <% end %>
         </ul>
-            <%= button_to 'New Idea', new_idea_path, class: "btn btn-outline-primary btn-sm float-right mr-3" %>
+            <%= button_to 'New Idea', new_idea_path, class: "btn btn-outline-primary btn-sm float-right mr-3", method: :get %>
       </div>
     </nav>
 
-    <main class="container-fluid ml-5 mr-5">
-
+    <main class="container-fluid">
     <p>
     <% flash.each do |type, message| %>
       <div class="flash flash-<%= type %>">
@@ -39,7 +38,6 @@
       </div>
     <% end %>
     </p>
-
       <%= yield %>
     </main>
 

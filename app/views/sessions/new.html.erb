@@ -1,17 +1,23 @@
 <h3>Sign In</h3>
 
-<%= form_with url: session_path, local: true do |f| %>
+<div class="form-container">
+    <div class="box">
 
-    <div>
-        <%= f.label :email %>
-        <%= f.email_field :email %>
-    <div>
+        <%= form_with url: session_path, local: true do |f| %>
 
-    <div>
-        <%= f.label :password %>
-        <%= f.password_field :password %>
-    <div>
+            <div class="form-group">
+                <%= f.label :email, class: "label" %>
+                <%= f.email_field :email, class: "form-control" %>
+            <div>
 
-    <%= f.submit "Sign In" %>
+            <div class="form-group">
+                <%= f.label :password, class: "label" %>
+                <%= f.password_field :password, class: "form-control" %>
+            <div>
+            <br>
+            <%= f.submit "Sign In", class: "btn btn-outline-primary" %>
 
-<% end %>
+        <% end %>
+
+    </div>
+</div>

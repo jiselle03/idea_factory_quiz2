@@ -1,13 +1,37 @@
+.container-fluid {
+    margin: 2em 3em;
+}
+
 .nav-container{
     display:flex;
     flex-direction: row;
-}
-
-.logo-container{
-    margin: 0 2em;
+    padding: 0 2em;
 }
 
 .menu-container{
     flex: 1;
-    margin: 0 2em;
+}
+
+.form-container {
+    margin: auto;
+}
+
+.box {
+    margin: 2em 4em;
+    padding: 2em;
+    border: 1px solid lightgrey;
+    box-shadow: 5px 5px #888888;
+}
+
+.box h3 {
+    text-align: center;
+}
+
+.box .center {
+    margin: auto;
+    display:block;
+}
+
+h3 {
+    margin: 0 2.5em;
 }
