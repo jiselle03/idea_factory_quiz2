@@ -1,6 +1,7 @@
 class IdeasController < ApplicationController
     before_action :authenticate_user!, except: [:index, :show]
     before_action :find_idea, only: [:edit,:update,:show, :destroy]
+    before_action :authorize!, only: [:edit, :update, :destroy]
 
     def new
         @idea = Idea.new
@@ -53,5 +54,12 @@ class IdeasController < ApplicationController
 
     def find_idea
         @idea = Idea.find params[:id]
+    end
+
+    def authorize!
+        unless can?(:crud, @idea)
+            flash[:danger] = "Access denied"
+            redirect_to idea_path(@idea)
+        end
     end
 end
