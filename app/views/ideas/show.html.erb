@@ -3,8 +3,12 @@
 <p><%= @idea.description %></p>
 <p>Added by <%= @idea.user.full_name %> <%= time_ago_in_words(@idea.created_at) %> ago</p>
 <p>Last Edited <%= time_ago_in_words(@idea.updated_at) %> ago</p>
-<%= link_to("Edit", edit_idea_path(@idea.id)) %> | 
-<%= link_to("Delete", idea_path(@idea), method: :delete, data: {confirm: 'Are you sure?'}) %>
+
+<% if can? :crud, @idea %>
+    <%= link_to("Edit", edit_idea_path(@idea.id)) %> | 
+    <%= link_to("Delete", idea_path(@idea), method: :delete, data: {confirm: 'Are you sure?'}) %>
+<% end %>
+
 <% if @like.present? && can?(:destroy, @like) %>
     <%= link_to(
         "Unlike",
@@ -51,16 +55,16 @@
         <li>
             <%= review.body %> <br>
             <% if can? :crud, review %>
-            <small>
-                <%= link_to(
-                    "Delete",
-                    idea_review_path(@idea, review),
-                    method: :delete,
-                    data: {
-                        confirm: "Are you sure?"
-                    }
-                ) %>
-            </small>
+                <small>
+                    <%= link_to(
+                        "Delete",
+                        idea_review_path(@idea, review),
+                        method: :delete,
+                        data: {
+                            confirm: "Are you sure?"
+                        }
+                    ) %>
+                </small>
             <% end %>
             <small>
                 Reviewed by <%= review.user.full_name %> <%= time_ago_in_words(review.created_at) %> ago
