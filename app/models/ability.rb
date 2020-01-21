@@ -18,7 +18,7 @@ class Ability
     end
 
     can(:crud, Review) do |review|
-      review.user == user || review.idea.user == user
+      review.user == user
     end
 
     can :like, Idea do |idea|
