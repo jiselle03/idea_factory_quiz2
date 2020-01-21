@@ -13,6 +13,8 @@ class Ability
       can :manage, :all
     end
     
+    can :crud, User, :id => user.id
+    
     can(:crud, Idea) do |idea|
       idea.user == user 
     end
