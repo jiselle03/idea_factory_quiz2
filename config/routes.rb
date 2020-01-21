@@ -7,6 +7,9 @@ Rails.application.routes.draw do
 
   get('/', { to: 'ideas#index', as: 'root' })
 
-  resources :users, only: [:new, :create]
+  resources :users, except: [:destroy]
   resource :session, only: [:new, :create, :destroy]
+
+  get('/users/:id/password/edit', { to: 'users#edit_password', as: 'edit_password' })
+  patch('/users/:id/password/edit', { to: 'users#update_password', as: 'update_password'})
 end
