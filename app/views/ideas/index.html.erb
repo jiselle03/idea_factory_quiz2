@@ -7,20 +7,20 @@
     <%= link_to("Read More", idea_path(idea.id), class: "btn btn-sm btn-outline-primary") %>
     <% like = idea.likes.find_by(user: current_user) %>
     <% if like.present? && can?(:destroy, like) %>
-    <small><%= link_to(
-        "Liked",
-        like_path(like),
-        method: :delete,
-        class: "btn btn-sm btn-outline-primary"
-    ) %></small>
-<% elsif can?(:like, idea) %>
-    <small><%= link_to(
-        "Like",
-        idea_likes_path(idea),
-        method: :post,
-        :class => "btn btn-sm btn-outline-primary"
-    ) %></small>
-<% end %>
+        <small><%= link_to(
+            "Liked",
+            like_path(like),
+            method: :delete,
+            class: "btn btn-sm btn-outline-primary"
+        ) %></small>
+    <% elsif can?(:like, idea) %>
+        <small><%= link_to(
+            "Like",
+            idea_likes_path(idea),
+            method: :post,
+            :class => "btn btn-sm btn-outline-primary"
+        ) %></small>
+    <% end %>
 <small class="float-right"><%= pluralize(idea.likes.count, "like") %></small>
     </div>
 </div>

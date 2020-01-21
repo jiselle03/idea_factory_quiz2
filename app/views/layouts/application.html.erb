@@ -20,13 +20,28 @@
         <ul class="nav justify-content-end">
           <% if user_signed_in? %>
             <li class="nav-item nav-link">Hello, <%= link_to current_user.first_name, edit_user_path(current_user.id) %>!</li>
-            <li class="nav-item"><%= link_to "Log Out", session_path, method: :delete, data: { confirm: "Are you sure you want to log out?" }, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to session_path, method: :delete, data: { confirm: "Are you sure you want to log out?" }, class: "nav-link" do %> 
+              Sign Out
+              <%= icon('fas', 'sign-out-alt') %>
+            <% end %>
+            </li>
           <% else %>
-            <li class="nav-item"><%= link_to "Log In", new_session_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Sign Up", new_user_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to new_session_path, class: "nav-link" do %>
+              Sign In
+              <%= icon('fas', 'sign-in-alt') %>
+            <% end %>
+            </li>
+            <li class="nav-item"><%= link_to new_user_path, class: "nav-link" do %>
+              Sign Up
+              <%= icon('fas', 'user-plus') %>
+            <% end %>
+            </li>
           <% end %>
         </ul>
-            <%= button_to 'New Idea', new_idea_path, class: "btn btn-outline-primary btn-sm float-right mr-3", method: :get %>
+            <%= link_to new_idea_path, class: "btn btn-outline-primary float-right mr-3" do %>
+              New Idea
+              <%= icon('fas', 'lightbulb') %>
+            <% end %>
       </div>
     </nav>
 
