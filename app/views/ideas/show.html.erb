@@ -45,12 +45,15 @@
                     :body,
                     cols: 50,
                     rows: 3,
-                    placeholder: "What do you think about this idea?",
+                    placeholder: 
+                    current_user && current_user != @idea.user ? "What do you think about this idea?" : "You cannot post a review.",
+                    current_user && current_user != @idea.user ? "" : :disabled => true,
                     class: "form-control col-10"
                     ) %>
             </div>
 
-            <%= f.submit 'Review', :class => "btn btn-outline-primary" %>
+            <%= f.submit 'Review', class: "btn btn-outline-primary",
+            current_user && current_user != @idea.user ? "" : :disabled => true %>
 
         <% end %>
     </section>
