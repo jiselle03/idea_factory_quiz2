@@ -2,8 +2,8 @@
 <div class="box">
     <h5><%= @idea.title %></h5>
     <p><%= @idea.description %></p>
-    <small>Added by <%= @idea.user.full_name %> <%= time_ago_in_words(@idea.created_at) %> ago</small><br>
-    <small>Last Edited <%= time_ago_in_words(@idea.updated_at) %> ago</small><br>
+    <small><em>Added by <%= @idea.user.full_name %> <%= time_ago_in_words(@idea.created_at) %> ago</em></small><br>
+    <small><em>Last Edited <%= time_ago_in_words(@idea.updated_at) %> ago</em></small><br>
 
     <% if can? :crud, @idea %>
         <br>
