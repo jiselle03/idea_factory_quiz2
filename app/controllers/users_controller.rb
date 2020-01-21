@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
     before_action :authenticate_user!, only: [:edit, :update]
     before_action :find_user, only: [:edit, :update, :edit_password, :update_password]
-    before_action :authorize!, only: [:edit, :update]
-    
+    before_action :authorize!, only: [:edit, :update, :edit_password, :update_password]
+
     def new
         @user = User.new
     end
