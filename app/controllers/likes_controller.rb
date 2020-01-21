@@ -10,11 +10,10 @@ class LikesController < ApplicationController
             else
                 flash[:danger] = like.errors.full_messages.join(", ")
             end
-            redirect_to idea
         else
             flash[:danger] = "You can't like your own idea!" 
-            redirect_to idea_path(idea)
         end
+        redirect_to request.referer
     end
 
     def destroy
@@ -22,9 +21,9 @@ class LikesController < ApplicationController
         if can? :destroy, like
             like.destroy
             flash[:success] = "Idea unliked"
-            redirect_to idea_path(like.idea)
         else
             flash[:alert] = "Can't delete like!"
         end
+        redirect_to request.referer
     end
 end
