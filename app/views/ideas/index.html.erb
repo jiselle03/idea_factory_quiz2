@@ -1,0 +1,31 @@
+<h5>Check out all these ideas...</h5>
+
+<% @ideas.each do |idea| %>
+<div class="card">
+    <div class="card-body">
+    <h5 class="card-title"><%= link_to(idea.title, idea_path(idea.id)) %></h5>
+    <p class="card-text"><%= idea.description %><br>
+    <small>Posted by <%= idea.user.full_name %> <%= time_ago_in_words(idea.created_at) %> ago</em></small></p>
+    <%= link_to("Read More", idea_path(idea.id), class: "btn btn-sm btn-outline-primary") %>
+    <% like = idea.likes.find_by(user: current_user) %>
+    <% if like.present? && can?(:destroy, like) %>
+        <small><%= link_to(
+            "Liked",
+            like_path(like),
+            method: :delete,
+            class: "btn btn-sm btn-outline-primary"
+        ) %></small>
+    <% elsif can?(:like, idea) %>
+        <small><%= link_to(
+            "Like",
+            idea_likes_path(idea),
+            method: :post,
+            :class => "btn btn-sm btn-outline-primary"
+        ) %></small>
+    <% end %>
+<small class="float-right"><%= pluralize(idea.likes.count, "like") %></small>
+    </div>
+</div>
+<br>
+
+<% end %>

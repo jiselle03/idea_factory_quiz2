@@ -1,0 +1,33 @@
+<div class="box">
+    <h3>Account</h3>
+
+    <%= form_with model: @user, local: true do |f| %>
+
+        <% if @user.errors.any? %>
+            <p><%= user.errors.full_messages.join(", ") %></p>
+        <% end %>
+        <h5>Profile</h5>
+        <div class="form-group">
+        <%= f.label :first_name, class: "label" %>
+        <%= f.text_field :first_name, class: "form-control" %>
+        </div>
+        <div class="form-group">
+        <%= f.label :last_name, class: "label" %>
+        <%= f.text_field :last_name, class: "form-control" %>
+        </div>
+        <div class="form-group">
+        <%= f.label :email_address, class: "label" %>
+        <%= f.email_field :email, class: "form-control" %>
+        </div>
+
+    <br>
+        <%= f.submit "Update", class: "btn btn-outline-primary" %>
+
+    <% end %>
+    <hr>
+    <h5>Security</h5>
+
+    <%= link_to('Change Password', edit_password_path(@user.id), class: "btn btn-outline-primary") %>
+
+    <br>
+</div>
