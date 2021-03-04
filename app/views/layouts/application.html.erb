@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CodecoreQuiz2IdeaFactory</title>
+    <title>Idea Factory</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,6 +10,51 @@
   </head>
 
   <body>
-    <%= yield %>
+
+    <nav class="nav-container"> 
+      <div class="logo-container">
+        <%= link_to image_tag("logo.png", height:75), root_path %><br>
+        <small><em>HOME OF THE NEXT BIG THING</em></small>
+      </div>
+      <div class="menu-container">
+        <ul class="nav justify-content-end">
+          <% if user_signed_in? %>
+            <li class="nav-item nav-link">Hello, <%= link_to current_user.first_name, edit_user_path(current_user.id) %>!</li>
+            <li class="nav-item"><%= link_to session_path, method: :delete, data: { confirm: "Are you sure you want to log out?" }, class: "nav-link" do %> 
+              Sign Out
+              <%= icon('fas', 'sign-out-alt') %>
+            <% end %>
+            </li>
+          <% else %>
+            <li class="nav-item"><%= link_to new_session_path, class: "nav-link" do %>
+              Sign In
+              <%= icon('fas', 'sign-in-alt') %>
+            <% end %>
+            </li>
+            <li class="nav-item"><%= link_to new_user_path, class: "nav-link" do %>
+              Sign Up
+              <%= icon('fas', 'user-plus') %>
+            <% end %>
+            </li>
+          <% end %>
+        </ul>
+            <%= link_to new_idea_path, class: "btn btn-outline-primary float-right mr-3" do %>
+              New Idea
+              <%= icon('fas', 'lightbulb') %>
+            <% end %>
+      </div>
+    </nav>
+
+    <main class="container-fluid">
+    <p>
+    <% flash.each do |type, message| %>
+      <div class="flash flash-<%= type %>">
+        <%= message %>
+      </div>
+    <% end %>
+    </p>
+      <%= yield %>
+    </main>
+
   </body>
 </html>

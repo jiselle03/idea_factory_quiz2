@@ -1,0 +1,92 @@
+<h3>Hey, here's an idea...</h3><br>
+<div class="box">
+    <h5><%= @idea.title %></h5>
+    <p><%= @idea.description %></p>
+    <small><em>Added by <%= @idea.user.full_name %> <%= time_ago_in_words(@idea.created_at) %> ago</em></small><br>
+    <small><em>Last Edited <%= time_ago_in_words(@idea.updated_at) %> ago</em></small><br>
+
+    <% if can? :crud, @idea %>
+        <br>
+        <%= link_to("Edit", edit_idea_path(@idea), class: "btn btn-outline-primary btn-sm") %>
+        <%= link_to("Delete", idea_path(@idea), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-primary btn-sm") %>
+    <% end %>
+
+    <% if @like.present? && can?(:destroy, @like) %>
+    <small> <%= link_to(
+            "Liked",
+            like_path(@like),
+            method: :delete,
+            class: "btn btn-outline-primary btn-sm"
+        ) %></small>
+    <% elsif can?(:like, @idea) %>
+        <small><%= link_to(
+            "Like",
+            idea_likes_path(@idea),
+            method: :post,
+            class: "btn btn-outline-primary btn-sm"
+        ) %></small>
+    <% end %>
+
+    <small><%= pluralize(@idea.likes.count, "like") %></small>
+    <br>
+
+    <section class="form-container">
+        <h5>Leave a Review</h5>
+        <%= form_with(model: [@idea, @review], local: true) do |f| %>
+            <% if @review.errors.present? %>
+            <p class="form-errors">
+                <%= @review.errors.full_messages.join(", ") %>
+            </p>
+            <% end %>
+        
+            <div class="form-group">
+                <%= f.text_area(
+                    :body,
+                    cols: 50,
+                    rows: 3,
+                    placeholder: 
+                    current_user && current_user != @idea.user ? "What do you think about this idea?" : "You cannot review this idea.",
+                    current_user && current_user != @idea.user ? "" : :disabled => true,
+                    class: "form-control col-10"
+                    ) %>
+            </div>
+
+            <%= f.submit 'Review', class: "btn btn-outline-primary",
+            current_user && current_user != @idea.user ? "" : :disabled => true %>
+
+        <% end %>
+    </section>
+</div>
+
+<br>
+<hr>
+<br>
+
+<section class="reviews-container">
+    <h3 class="center">Reviews</h3><br>
+    <ul class="review-list">
+        <% @reviews.each do |review| %>
+        <li class="card">
+            <div class="card-body">
+            <p class="card-text"><%= review.body %></p>
+            <small>
+                <em>Reviewed by <%= review.user.full_name %> <%= time_ago_in_words(review.created_at) %> ago </em>
+            </small>
+            <% if can? :crud, review %>
+                <small>
+                    <%= link_to(
+                        "Delete",
+                        idea_review_path(@idea, review),
+                        method: :delete,
+                        data: {
+                            confirm: "Are you sure?"
+                        }
+                    ) %>
+                </small>
+            <% end %>
+            </div>
+        </li>
+        <br>
+        <% end %>
+    </ul>
+</section>
